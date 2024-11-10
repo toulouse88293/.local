@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo -e "!!!! IF INSTALLING ON WSL, YOU NEED TO INSTALL FONT TO WINDOWS, NOT LINUX INSIDE THE WSL\n"
 sudo apt install fontconfig
 cd ~
 wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip
