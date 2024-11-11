@@ -20,9 +20,9 @@ cd $LOCAL_DIR
 
 git submodule init
 git submodule update
-
-sudo apt install -y fzf git make fzf ripgrep curl wget unzip
 sudo apt update && sudo apt upgrade
+
+sudo apt install -y fzf git make ripgrep curl wget unzip gcc zsh
 
 
 cd $HOME
@@ -56,7 +56,7 @@ ln -s $ZSH_DIR/.zshenv $HOME/
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 
-echo "Script has finished working, now retsart the terminal and paste this: nvm install node && source ~/.bashrc && cd ~/.config/nvim && nvm use node"
+echo "Script has finished working, now restart the terminal and paste this: nvm install node && cd ~/.config/nvim && nvm use node"
 
 #cowsay "Restart the shell and do:\
 #nvm install node\
