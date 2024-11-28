@@ -26,11 +26,12 @@ exec --no-startup-id xinput set-prop 11 303 1
 
 #exec --no-startup-id . ~/projects/.local/etc/zsh/.zshenv
 
-set $browser firefox
+set $browser microsoft-edge-stable
 set $work_dir $HOME/projects #ultimate root workdir for all my stuff
 set $local_dir $HOME/projects/.local
 set $etc_dir  $HOME/projects/.local/etc
 set $bin_dir $HOME/projects/.local/bin
+set $TERMINAL alacritty
 
 exec --no-startup-id dunst -config $etc_dir/dunstrc
 exec --no-startup-id setxkbmap pl
@@ -107,6 +108,9 @@ default_border pixel
 
 # start a terminal
 bindsym $mod+Return exec alacritty
+
+# start doom emacs
+bindsym $mod+Shift+o exec --no-startup-id $bin_dir/doom_run
 
 # kill focused window
 bindsym $mod+q kill
