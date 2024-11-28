@@ -53,17 +53,12 @@ git submodule init
 git submodule update
 
 # Install required packages using dnf
-sudo dnf install -y fzf git make gcc gcc-c++ lua5.3 openssh-server curl wget flameshot libXt-devel libX11-devel libXrandr-devel libharfbuzz-devel neofetch picom fonts-hermit feh alsa-utils glibc-devel glib2-devel cairo-devel fontconfig-fontawesome ffmpeg playerctl ranger mpv xclip scrot ImageMagick dconf i3 dunst nm-tray blueman geoclue libopencv-devel libX11-devel i3lock keychain brightnessctl
-
-# Skip flatpak installation (not recommended for Fedora)
-
-# Skip Spotify installation using dedicated repository (use Flatpak instead)
-
-# Install Brave browser
-sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-browser-archive-keyring.gpg
-sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/fedora/stable
-sudo dnf update
-sudo dnf install brave-browser
+sudo dnf install -y fzf git make gcc gcc-c++ lua5.3 openssh-server curl wget \
+ flameshot libXt-devel libX11-devel libXrandr-devel libharfbuzz-devel neofetch \ 
+picom fonts-hermit feh alsa-utils glibc-devel glib2-devel cairo-devel \ 
+fontconfig-fontawesome ffmpeg playerctl ranger mpv xclip scrot ImageMagick \ 
+dconf i3 dunst nm-tray blueman geoclue libopencv-devel libX11-devel i3lock \ 
+keychain brightnessctl ripgrep alacritty python3 emacs fd-find hledger
 
 # Setting up fonts
 sudo mkdir -p /usr/share/fonts/TTF/Meslo && mv *.ttf /usr/share/fonts/TTF/Meslo/
@@ -81,7 +76,7 @@ sudo dnf install neovim git
 git clone git@github.com:"$git_user"/nvim.git "$HOME/.config/nvim"
 git clone git@github.com:"$git_user"/.local.git "$MAIN_DIR/.local"
 git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.neovim
-rm "$HOME/.zshrc"  # Assuming you don't use zsh
+rm "$HOME/.zshrc" #????
 
 # Clone tmux plugins (assuming tmux is already installed)
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -98,6 +93,13 @@ ln -s "$LOCAL_DIR/etc/config" "$HOME/.config/i3/"
 # Install nvm using NodeSource
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 . "$HOME/.bashrc"  # Source the .bashrc file immediately
+
+# Install DOOM emacs
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+~/.config/emacs/bin/doom install
+
+git config --global user.name $git_user
+git config --global user.email "toulouse88293@outlook.com"
 
 # Final message (adjusted for nvm installation)
 cowsay "Restart the shell and do: nvm install node && cd ~/.config/nvim && nvm use node to complete neovim installation"
