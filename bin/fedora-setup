@@ -9,7 +9,7 @@ read work_dir
 echo -n "Provide your github username\n"
 read git_user
 
-sudo cp /home/$username/$work_dir/etc/dnf.conf /etc/dnf/dnf.conf
+sudo cp /home/$username/$work_dir/.local/etc/dnf.conf /etc/dnf/dnf.conf
 
 sudo dnf update -y
 sudo dnf -y upgrade --refresh
@@ -76,7 +76,7 @@ sudo dnf install -y fzf git make gcc gcc-c++ lua openssh-server curl wget \
 picom fonts-hermit feh alsa-utils glibc-devel glib2-devel cairo-devel \
 fontconfig-fontawesome ffmpeg playerctl ranger mpv xclip scrot ImageMagick \
 dconf i3 dunst nm-tray blueman geoclue libopencv-devel libX11-devel i3lock \
-keychain brightnessctl ripgrep alacritty python3 emacs fd hledger \
+keychain brightnessctl ripgrep alacritty python3 emacs-gtk+x11 fd hledger \
 i3status gnome-session-xsession texlive-collection-mathextra latex dvisvgm #last three for xenops latex preview in emacs
 
 # Setting up fonts
@@ -120,6 +120,8 @@ $HOME/.config/emacs/bin/doom install
 
 git config --global user.name $git_user
 git config --global user.email "toulouse88293@outlook.com"
+
+chsh
 
 # Final message (adjusted for nvm installation)
 cowsay "Restart the shell and do: nvm install node && cd ~/.config/nvim && nvm use node to complete neovim installation"
