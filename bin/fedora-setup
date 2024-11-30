@@ -9,18 +9,33 @@ read work_dir
 echo -n "Provide your github username\n"
 read git_user
 
-sudo echo max_parallel_downloads=10 >> /etc/dnf/dnf.conf
-sudo echo defaultyes=True >> /etc/dnf/dnf.conf
-sudo echo keepcache=True >> /etc/dnf/dnf.conf
+sudo cp /home/$username/$work_dir/etc/dnf.conf /etc/dnf/dnf.conf
 
 sudo dnf update -y
+sudo dnf -y upgrade --refresh
 
-sudo dnf groupupdate core
+#enable non-free
+sudo dnf install -y\
+  https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+# obsolete with dnf5: sudo dnf groupupdate core
+
+#flatpak add some non-free
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+#media codecs
+sudo dnf swap 'ffmpeg-free' 'ffmpeg' --allowerasing # Switch to full FFMPEG.
+sudo dnf group install Multimedia
+sudo dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin # Installs gstreamer components. Required if you use Gnome Videos and other dependent applications.
+sudo dnf update @sound-and-video # Installs useful Sound and Video complement packages.
+sudo dnf install ffmpeg ffmpeg-libs libva libva-utils
+
+#for firefox Video
+sudo dnf config-manager --set-enabled fedora-cisco-openh264
+sudo dnf install -y openh264 gstreamer1-plugin-openh264 mozilla-openh264
 
 sudo hostnamectl set-hostname "ap"
 
-sudo dnf install -y\
-  https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 echo -e "Installing needed packages\n"
 sudo dnf install -y fzf git make  neovim lua openssh curl zsh cowsay\
@@ -33,11 +48,14 @@ sudo dnf groupupdate multimedia --setop="install_weak_deps=False" \
 
 sudo dnf remove gnome-software PackageKit
 
-sudo dnf groupupdate sound-and-video
+#cpu mitigations for intel < 10th gen
+sudo grubby --update-kernel=ALL --args="mitigations=off"
+
+#faster boot time
+sudo systemctl disable NetworkManager-wait-online.service
 
 flatpak install com.mattjakeman.ExtensionManager
 
-#!/bin/bash
 
 # Navigate to the script's directory
 cd "$(dirname "$0")"
@@ -53,13 +71,13 @@ git submodule init
 git submodule update
 
 # Install required packages using dnf
-sudo dnf install -y fzf git make gcc gcc-c++ lua5.3 openssh-server curl wget \
+sudo dnf install -y fzf git make gcc gcc-c++ lua openssh-server curl wget \
  flameshot libXt-devel libX11-devel libXrandr-devel libharfbuzz-devel neofetch \
 picom fonts-hermit feh alsa-utils glibc-devel glib2-devel cairo-devel \
 fontconfig-fontawesome ffmpeg playerctl ranger mpv xclip scrot ImageMagick \
 dconf i3 dunst nm-tray blueman geoclue libopencv-devel libX11-devel i3lock \
-keychain brightnessctl ripgrep alacritty python3 emacs fd-find hledger \
-i3 i3status gnome-session-xsession texlive-collection-mathextra latex dvisgm #last three for xenops latex preview in emacs
+keychain brightnessctl ripgrep alacritty python3 emacs fd hledger \
+i3status gnome-session-xsession texlive-collection-mathextra latex dvisvgm #last three for xenops latex preview in emacs
 
 # Setting up fonts
 sudo mkdir -p /usr/share/fonts/TTF/Meslo && mv *.ttf /usr/share/fonts/TTF/Meslo/
@@ -96,8 +114,9 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 . "$HOME/.bashrc"  # Source the .bashrc file immediately
 
 # Install DOOM emacs
-git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
-~/.config/emacs/bin/doom install
+git clone --depth 1 https://github.com/doomemacs/doomemacs $HOME/.config/emacs
+
+$HOME/.config/emacs/bin/doom install
 
 git config --global user.name $git_user
 git config --global user.email "toulouse88293@outlook.com"
