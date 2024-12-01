@@ -77,7 +77,7 @@ picom fonts-hermit feh alsa-utils glibc-devel glib2-devel cairo-devel \
 fontconfig-fontawesome ffmpeg playerctl ranger mpv xclip scrot ImageMagick \
 dconf i3 dunst nm-tray blueman geoclue libopencv-devel libX11-devel i3lock \
 keychain brightnessctl ripgrep alacritty python3 emacs-gtk+x11 fd hledger \
-i3status gnome-session-xsession texlive-collection-mathextra latex dvisvgm feh #last three for xenops latex preview in emacs
+i3status gnome-session-xsession texlive-collection-mathextra latex dvisvgm feh xrandr dvipng #last three for xenops latex preview in emacs
 
 # Setting up fonts
 sudo mkdir -p /usr/share/fonts/TTF/Meslo && mv *.ttf /usr/share/fonts/TTF/Meslo/
